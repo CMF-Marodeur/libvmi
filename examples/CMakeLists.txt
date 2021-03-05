@@ -10,6 +10,9 @@ target_link_libraries(cr3-fast-switch-test vmi_shared xenctrl)
 add_executable(descriptor-event-example descriptor-event-example.c)
 target_link_libraries(descriptor-event-example vmi_shared)
 
+add_executable(fast-switch-with-breakpoint fast-switch-with-breakpoint.c)
+target_link_libraries(fast-switch-with-breakpoint vmi_shared xenctrl)
+
 add_executable(mem-event-example mem-event-example.c)
 target_link_libraries(mem-event-example vmi_shared)
 

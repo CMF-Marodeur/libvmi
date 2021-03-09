@@ -691,6 +691,10 @@ int main (int argc, char **argv)
         //init shadowpage
         addr_t max_gfn;
         xc_domain_maximum_gpfn(xc, vm_id, &max_gfn);
+        AllocatePage(xc, vmi, vm_id);
+
+        shadow_page.read_write = interrupt_PA >> PAGE_RANGE;
+        shadow_page.execute = max_gfn >> PAGE_RANGE;
 
         // copy over page contents to shadow page.
         uint8_t buffer[PAGE_SIZE];
@@ -699,6 +703,11 @@ int main (int argc, char **argv)
             goto error_exit;
         }
         if (vmi_write_pa(vmi, shadow_page.execute << PAGE_RANGE, PAGE_SIZE, &buffer, NULL) != VMI_SUCCESS)
+        {
+            goto error_exit;
+        }
+
+        if (vmi_slat_change_gfn(vmi, view_x, shadow_page.read_write, shadow_page.execute) != VMI_SUCCESS)
         {
             goto error_exit;
         }
